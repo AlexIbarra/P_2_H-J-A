@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,13 +11,13 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-public class PanelSliders extends JPanel{
+public class PanelSliders extends JPanel implements ActionListener{
 	
 	
 	private static final long serialVersionUID = 1L;
 	private JSlider slider;
 	private JTextField porcentaje;
-	
+	private int value;
 	
 	public PanelSliders() {
 		
@@ -33,12 +35,18 @@ public class PanelSliders extends JPanel{
 		this.porcentaje = new JTextField(5);
 		jpPorcentaje.setBounds(375, 47, 50, 40);
 		jpPorcentaje.add(this.porcentaje);
-		
-		
+		this.slider.getValue();
 		this.add(jpSlider);
 		this.add(jpPorcentaje);
 		
 		this.setBackground(Color.ORANGE);
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

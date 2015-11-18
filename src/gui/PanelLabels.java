@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -16,12 +18,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-public class PanelLabels extends JPanel{
+import main.RankingChurukov;
+
+public class PanelLabels extends JPanel implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	
 	
-	private JLabel[][] pares;
+	private JButton[][] pares;
 	
 	
 	
@@ -30,7 +34,7 @@ public class PanelLabels extends JPanel{
 	public PanelLabels(){
 		
 		
-		this.pares = new JLabel[13][13];
+		this.pares = new JButton[13][13];
 		Border border = BorderFactory.createLineBorder(Color.black, 1);
 		
 		
@@ -41,7 +45,7 @@ public class PanelLabels extends JPanel{
 		
 		for(int i=0; i<13; i++) {
 			for(int j=0; j<13; j++) {
-				this.pares[j][i] = new JLabel();				
+				this.pares[j][i] = new JButton();				
 				this.pares[j][i].setPreferredSize(new Dimension(30, 30));
 //				this.pares[j][i].setMargin(new Insets(1,1,1,1));
 				this.pares[j][i].setBorder(border);
@@ -53,12 +57,14 @@ public class PanelLabels extends JPanel{
 				if(j==i)
 					this.pares[j][i].setBackground(new Color(0, 255, 0));
 				else if(j>i)
-					this.pares[j][i].setBackground(new Color(255, 0, 0));
+					this.pares[j][i].setBackground(Color.MAGENTA);
 				else
-					this.pares[j][i].setBackground(new Color(0, 0, 255));
+					this.pares[j][i].setBackground(Color.cyan);
 				
 				this.pares[j][i].setOpaque(true);
 //				this.pares[j][i].repaint();
+				this.pares[j][i].addActionListener(this);
+				
 				this.add(this.pares[j][i]);
 			}
 			
@@ -238,6 +244,22 @@ public class PanelLabels extends JPanel{
 //    	updateUI();
 //    	repaint();
 		
+		
+	}
+
+
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 13;i++){
+			for (int j = 0; j < 13; j++){
+				if(e.getSource() == this.pares[j][i]){
+					this.pares[j][i].setBackground(Color.YELLOW);
+				}
+			}
+		}
 		
 	}
 }
