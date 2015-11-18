@@ -7,7 +7,6 @@ import IO.FileOut;
 import carta.Carta;
 import carta.Mano;
 import gui.Ventana;
-import gui.Window;
 import jugadas.Jugadas;
 import jugadores.ComparadorJugadas;
 import jugadores.Jugador;

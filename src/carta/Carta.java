@@ -21,6 +21,11 @@ public class Carta {
 		this.usada = false;
 		this.kicker = -1;
 	}
+	public Carta (char num){
+		this.numero = num;
+		setHashMap();
+		this.codigo = this.valores.get(this.numero);
+	}
 	
 	public char getNumero() {
 		return this.numero;
