@@ -6,6 +6,7 @@ import IO.FileIn;
 import IO.FileOut;
 import carta.Carta;
 import carta.Mano;
+import controlador.Controller;
 import gui.Ventana;
 import jugadas.Jugadas;
 import jugadores.ComparadorJugadas;
@@ -15,13 +16,14 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		ParserJugadas parserJ = new ParserJugadas();
-		ParserDraws parserD = new ParserDraws();
-		int draws;
+//		ParserJugadas parserJ = new ParserJugadas();
+//		ParserDraws parserD = new ParserDraws();
+//		int draws;
 		
 		
-		Ventana wind = new Ventana();
-//		Window wind = new Window();
+		
+		Controller cntrl = new Controller();
+		Ventana wind = new Ventana(cntrl);
 		
 		
 //		try {

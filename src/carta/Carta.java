@@ -23,6 +23,7 @@ public class Carta {
 	}
 	public Carta (char num){
 		this.numero = num;
+		this.valores = new HashMap<Character, Integer>();
 		setHashMap();
 		this.codigo = this.valores.get(this.numero);
 	}

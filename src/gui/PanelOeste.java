@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -13,23 +15,32 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-public class PanelOeste extends JPanel{
+import controlador.Controller;
+import main.PilaPosiciones;
+import observers.RangoObserver;
+
+public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private JButton evaluate;
-	private Vector<JButton> players;
-	private Vector<JTextField> rangopls;
+	private JButton[] players;
+	private JTextField[] rangopls;
+	private String rango;
+	private Controller controller;
 	
-	public PanelOeste() {
+	public PanelOeste(Controller controller) {
+		
+		this.controller = controller;
 		
 		JButton player;
 		JTextField rango;
 		StringBuilder namePlayer = new StringBuilder();
 		int tam=0;
 		
-		this.players = new Vector<JButton>();
-		this.rangopls = new Vector<JTextField>();
+		this.players = new JButton[9];
+		this.rangopls = new JTextField[9];
+		this.rango = new String();
 		
 		this.setLayout(new GridLayout(2, 0));
 		
@@ -63,8 +74,9 @@ public class PanelOeste extends JPanel{
 				
 			}
 			
-			this.players.add(player);
-			this.rangopls.add(rango);
+			this.players[i] = player;
+			this.players[i].setEnabled(false);
+			this.rangopls[i] = rango;
 			
 			norte.add(player);
 			norte.add(rango);
@@ -78,6 +90,7 @@ public class PanelOeste extends JPanel{
 		this.evaluate = new JButton("Evaluate");
 		this.evaluate.setBounds(350, 200, 90, 30);
 		this.evaluate.setMargin(new Insets(1,1,1,1));
+		this.evaluate.addActionListener(this);
 		norte.add(this.evaluate);
 		
 		
@@ -96,8 +109,21 @@ public class PanelOeste extends JPanel{
 		sur.add(vacio, BorderLayout.CENTER);
 		this.add(sur);
 		
+		this.controller.addObserver(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		
-//		this.setBackground(Color.ORANGE);
+		if(e.getSource() == this.evaluate) {
+			this.rango = this.rangopls[0].getText();
+			this.controller.nuevoRango(this.rango);
+		}
+	}
+
+	@Override
+	public void hayRangos(PilaPosiciones posiciones) {
+		// TODO Auto-generated method stub
 		
 	}
 }

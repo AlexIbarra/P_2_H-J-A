@@ -6,6 +6,8 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import controlador.Controller;
+
 
 public class PanelEste extends JPanel {
 	
@@ -13,7 +15,7 @@ public class PanelEste extends JPanel {
 	
 	
 	
-	public PanelEste(){
+	public PanelEste(Controller controller){
 		
 		this.setSize(500, 700);
 		
@@ -21,8 +23,8 @@ public class PanelEste extends JPanel {
 		
 //		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(), BorderFactory.createLoweredSoftBevelBorder()));
 		
-		this.add(new PanelLabels(), BorderLayout.NORTH);
-		this.add(new PanelSliders(), BorderLayout.CENTER);
-		this.add(new PanelButtons(),BorderLayout.SOUTH);
+		this.add(new PanelGrid(controller), BorderLayout.NORTH);
+		this.add(new PanelSliders(controller), BorderLayout.CENTER);
+//		this.add(new PanelButtons(controller),BorderLayout.SOUTH);
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,21 +19,26 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import controlador.Controller;
+import main.PilaPosiciones;
+import main.Posicion;
 import main.RankingChurukov;
+import observers.RangoObserver;
 
-public class PanelLabels extends JPanel implements ActionListener{
+public class PanelGrid extends JPanel implements ActionListener, RangoObserver{
 	
 	private static final long serialVersionUID = 1L;
 	
 	
 	private JButton[][] pares;
+	private Controller controller;
 	
 	
 	
 	
-	
-	public PanelLabels(){
+	public PanelGrid(Controller controller){
 		
+		this.controller = controller;
 		
 		this.pares = new JButton[13][13];
 		Border border = BorderFactory.createLineBorder(Color.black, 1);
@@ -47,7 +53,6 @@ public class PanelLabels extends JPanel implements ActionListener{
 			for(int j=0; j<13; j++) {
 				this.pares[j][i] = new JButton();				
 				this.pares[j][i].setPreferredSize(new Dimension(30, 30));
-//				this.pares[j][i].setMargin(new Insets(1,1,1,1));
 				this.pares[j][i].setBorder(border);
 				this.pares[j][i].setFont(new Font("Arial", Font.PLAIN, 12));
 				
@@ -55,14 +60,13 @@ public class PanelLabels extends JPanel implements ActionListener{
 				this.pares[j][i].setHorizontalAlignment(SwingConstants.CENTER);
 
 				if(j==i)
-					this.pares[j][i].setBackground(new Color(0, 255, 0));
+					this.pares[j][i].setBackground(Color.green);
 				else if(j>i)
 					this.pares[j][i].setBackground(Color.MAGENTA);
 				else
 					this.pares[j][i].setBackground(Color.cyan);
 				
 				this.pares[j][i].setOpaque(true);
-//				this.pares[j][i].repaint();
 				this.pares[j][i].addActionListener(this);
 				
 				this.add(this.pares[j][i]);
@@ -244,7 +248,21 @@ public class PanelLabels extends JPanel implements ActionListener{
 //    	updateUI();
 //    	repaint();
 		
-		
+    	this.controller.addObserver(this);
+	}
+	
+	
+	private void resetGrid() {
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 13; j++) {
+				if(j==i)
+					this.pares[j][i].setBackground(Color.green);
+				else if(j>i)
+					this.pares[j][i].setBackground(Color.MAGENTA);
+				else
+					this.pares[j][i].setBackground(Color.cyan);
+			}			
+		}
 	}
 
 
@@ -256,10 +274,44 @@ public class PanelLabels extends JPanel implements ActionListener{
 		for (int i = 0; i < 13;i++){
 			for (int j = 0; j < 13; j++){
 				if(e.getSource() == this.pares[j][i]){
-					this.pares[j][i].setBackground(Color.YELLOW);
+					if(this.pares[j][i].getBackground() != Color.YELLOW)
+						this.pares[j][i].setBackground(Color.YELLOW);
+					else if(j==i)
+						this.pares[j][i].setBackground(Color.green);
+					else if(j>i)
+						this.pares[j][i].setBackground(Color.MAGENTA);
+					else
+						this.pares[j][i].setBackground(Color.cyan);
 				}
 			}
 		}
 		
 	}
+
+
+
+
+
+	@Override
+	public void hayRangos(PilaPosiciones posiciones) {
+		// TODO Auto-generated method stub
+		Posicion pos = new Posicion();
+		
+		// Primero dejo el tablero en su estado inicial
+		resetGrid();
+		
+		// Pinto las cartas del rango correspondiente
+		for (int i = 0; i < posiciones.getContador();i++){
+			pos = posiciones.extractPosition();
+			this.pares[pos.getColumna()][pos.getFila()].setBackground(Color.YELLOW);
+			this.pares[pos.getColumna()][pos.getFila()].repaint();
+		}
+		
+		posiciones.resetContador();
+		
+		updateUI();
+	}
+	
+	
+	
 }

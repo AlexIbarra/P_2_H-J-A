@@ -1,27 +1,36 @@
 package main;
 
+import java.util.Vector;
+
 import carta.Carta;
+import observers.RangoObserver;
 
 public class ParserRangos {
 
-	private class Boton{
-		int fila;
-		int col;
-		public Boton(int f, int c){
-			this.fila = f;
-			this.col = c;
-		}
-	}
+	static int ancho = 14;
+	private static Posicion[] paresDeCartas;
+	private PilaPosiciones pila;
 	
-	private static Boton[] paresDeCartas;
+
 	//private String cadena;
 	private static Carta carta1;
 	private static Carta carta2;
 	private static Carta carta3;
 	
-	static int ancho = 14;
+	private Vector<RangoObserver> rObserver;
 	
-	public Boton[] parseRangos(String s) {
+	
+	public ParserRangos() {
+		this.rObserver = new Vector<RangoObserver>();
+		this.pila = new PilaPosiciones();
+	}
+	
+	
+	
+	
+	
+	
+ 	public PilaPosiciones parseRangos(String s) {
 		
 		int posArray = 0;
 		String[] array = s.split(",");		
@@ -40,7 +49,8 @@ public class ParserRangos {
 					carta2 = new Carta(token[1]);
 					int j = carta1.getCodigo();
 					while(j < 15){                
-						paresDeCartas[posArray] = new Boton(ancho - j,ancho - j);//(ancho - j) * ancho + (ancho - j);
+//						paresDeCartas[posArray] = new Posicion(ancho - j,ancho - j);//(ancho - j) * ancho + (ancho - j);
+						this.pila.addPosicion(ancho - j, ancho - j); // col, fil
 						j++;
 						posArray++;
 					}
@@ -58,7 +68,8 @@ public class ParserRangos {
 						int p = carta2.getCodigo();
 						
 						while(p <= j){
-							paresDeCartas[posArray] = new Boton(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
+//							paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
+							this.pila.addPosicion(ancho-fila, ancho-p); // col, fil
 							p++;
 							posArray++;
 						}
@@ -72,7 +83,8 @@ public class ParserRangos {
 						int j = carta1.getCodigo();
 						int p = carta2.getCodigo();
 						while(p <= j){
-							paresDeCartas[posArray] = new Boton(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
+//							paresDeCartas[posArray] = new Posicion(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
+							this.pila.addPosicion(ancho-p, ancho-col);
 							p++;
 							posArray++;
 						}
@@ -90,7 +102,8 @@ public class ParserRangos {
 					int p = carta2.getCodigo();
 					fila = carta3.getCodigo();
 					while(p <= j){
-						paresDeCartas[posArray] = new Boton(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
+//						paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
+						this.pila.addPosicion(ancho-fila, ancho-p); // col, fil
 						p++;
 						posArray++;
 					}
@@ -104,7 +117,8 @@ public class ParserRangos {
 					int p = carta2.getCodigo();
 					col = carta3.getCodigo();
 					while(p <= j){
-						paresDeCartas[posArray] = new Boton(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
+//						paresDeCartas[posArray] = new Posicion(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
+						this.pila.addPosicion(ancho-p, ancho-col);
 						p++;
 						posArray++;
 					}
@@ -117,7 +131,8 @@ public class ParserRangos {
 				carta2 = new Carta(token[1]);
 				fila = carta1.getCodigo();
 				col = carta2.getCodigo();
-				paresDeCartas[posArray] = new Boton(ancho-fila,ancho-col);//(ancho-fila)+ancho + (ancho-col);
+//				paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-col);//(ancho-fila)+ancho + (ancho-col);
+				this.pila.addPosicion(ancho-fila, ancho-col);
 				posArray++;
 								
 			}
@@ -129,11 +144,31 @@ public class ParserRangos {
 		
 		
 		
-		return paresDeCartas;
+		return this.pila;
+	}
+ 	
+ 	public PilaPosiciones getPila() {
+		return pila;
 	}
 		
 	
 	
+	
+	// Metodos de los Observers
+	
+	public void addObserver(RangoObserver obs) {
+		this.rObserver.add(obs);
+	}
+	
+	public void notifyHayRango(String rango) {
+		
+		parseRangos(rango);
+		
+		for (RangoObserver o : this.rObserver){
+			o.hayRangos(this.pila);
+		}
+		
+	}
 	
 	
 	
