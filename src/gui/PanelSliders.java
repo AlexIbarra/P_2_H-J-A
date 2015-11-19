@@ -24,9 +24,12 @@ public class PanelSliders extends JPanel implements ActionListener{
 	private JSlider slider;
 	private JTextField porcentaje;
 	private int value;
+	private Controller controller;
 	StringBuilder porc;
 	
-	public PanelSliders(Controller controller) {
+	public PanelSliders(Controller contr) {
+		
+		this.controller = contr;
 		
 		this.setLayout(null);
 		
@@ -59,7 +62,7 @@ public class PanelSliders extends JPanel implements ActionListener{
 		anyPair.setMargin(new Insets(1,1,1,1));
 		JButton anySuited = new JButton("Any Suited");
 		anySuited.setMargin(new Insets(1,1,1,1));
-		JButton anyBroadway = new JButton("Any Broarway");	
+		JButton anyBroadway = new JButton("Any Broadway");	
 		anyBroadway.setMargin(new Insets(1,1,1,1));
 		JButton clear = new JButton("Clear");
 		clear.setMargin(new Insets(1,1,1,1));
@@ -93,8 +96,11 @@ public class PanelSliders extends JPanel implements ActionListener{
 		    	porcentaje.setText(porc.toString());
 		  		porcentaje.repaint();
 		  		porc.delete(0, porc.length());
+		  		controller.nuevoranking(value);
 		      }
 		 });
+		
+		
 		
 	}
 
@@ -105,6 +111,7 @@ public class PanelSliders extends JPanel implements ActionListener{
 		
 		this.porcentaje.setText(Integer.toString(this.slider.getValue()));
 		this.porcentaje.repaint();
+		
 		
 	}
 

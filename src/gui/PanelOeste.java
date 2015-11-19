@@ -109,7 +109,7 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 		sur.add(vacio, BorderLayout.CENTER);
 		this.add(sur);
 		
-		this.controller.addObserver(this);
+		this.controller.addRangoObserver(this);
 	}
 
 	@Override

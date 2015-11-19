@@ -1,198 +1,222 @@
 
 package main;
 
+import java.util.Vector;
+
+import observers.RangoObserver;
+import observers.RankingObserver;
+
 public class RankingChurukov {
 	
 	
 	
 	private int porcentaje;
-	private Ranking[] vecRanking;
+	private Posicion[] vecPosicion;
+	private PilaPosiciones pila;
+	private int value;
+	private Vector<RankingObserver> rObserver;
 	
-	public RankingChurukov(int porcentaje){
-		this.porcentaje = porcentaje;
+	public RankingChurukov(){
+		this.pila = new PilaPosiciones();
+		this.value = 0;
+		this.rObserver = new Vector<RankingObserver>();
+		this.vecPosicion = new Posicion[169];
+		rellenaArray();
 	}
 	
-	private class Ranking{
-		int fila;
-		int columna;
-		public Ranking(int fila, int columna){
-			this.fila = fila;
-			this.columna = columna;
-			
-		}
-	} 
+
 	
-	void rellenaArray(){
-		
-		vecRanking[0] = new Ranking(0,0);
-		vecRanking[1] = new Ranking(1,1);
-		vecRanking[2] = new Ranking(0,1);
-		vecRanking[3] = new Ranking(2,2);
-		vecRanking[4] = new Ranking(1,0);
-		vecRanking[5] = new Ranking(3,3);
-		vecRanking[6] = new Ranking(0,2);
-		vecRanking[7] = new Ranking(4,4);
-		vecRanking[8] = new Ranking(2,0);
-		vecRanking[9] = new Ranking(5,5);
-		vecRanking[10] = new Ranking(0,3);
-		vecRanking[11] = new Ranking(6,6);
-		vecRanking[12] = new Ranking(0,4);
-		vecRanking[13] = new Ranking(3,0);
-		vecRanking[14] = new Ranking(7,7);
-		vecRanking[15] = new Ranking(8,8);
-		vecRanking[16] = new Ranking(4,0);
-		vecRanking[17] = new Ranking(0,5);
-		vecRanking[18] = new Ranking(9,9);
-		vecRanking[19] = new Ranking(0,8);
-		vecRanking[20] = new Ranking(1,2);
-		vecRanking[21] = new Ranking(10,10);
-		vecRanking[22] = new Ranking(0,5);
-		vecRanking[23] = new Ranking(0,7);
-		vecRanking[24] = new Ranking(1,3);
-		vecRanking[25] = new Ranking(0,9);
-		vecRanking[26] = new Ranking(6,0);
-		vecRanking[27] = new Ranking(0,8);
-		vecRanking[28] = new Ranking(0,10);
-		vecRanking[29] = new Ranking(11,11);
-		vecRanking[30] = new Ranking(1,4);
-		vecRanking[31] = new Ranking(7,0);
-		vecRanking[32] = new Ranking(0,11);
-		vecRanking[33] = new Ranking(2,1);
-		vecRanking[34] = new Ranking(0,12);
-		vecRanking[35] = new Ranking(9,0);
-		vecRanking[36] = new Ranking(8,0);
-		vecRanking[37] = new Ranking(10,0);
-		vecRanking[38] = new Ranking(3,1);
-		vecRanking[39] = new Ranking(2,3);
-		vecRanking[40] = new Ranking(11,0);
-		vecRanking[41] = new Ranking(12,12);
-		vecRanking[42] = new Ranking(1,6);
-		vecRanking[43] = new Ranking(12,0);
-		vecRanking[44] = new Ranking(1,4);
-		vecRanking[45] = new Ranking(2,4);	
-		vecRanking[46] = new Ranking(1,6);
-		vecRanking[47] = new Ranking(1,7);
-		vecRanking[48] = new Ranking(3,4);
-		vecRanking[49] = new Ranking(1,5);
-		vecRanking[50] = new Ranking(1,8);
-		vecRanking[51] = new Ranking(3,2);
-		vecRanking[52] = new Ranking(2,5);
-		vecRanking[53] = new Ranking(1,9);
-		vecRanking[54] = new Ranking(8,1);
-		vecRanking[55] = new Ranking(1,10);
-		vecRanking[56] = new Ranking(4,2);
-		vecRanking[57] = new Ranking(7,1);
-		vecRanking[58] = new Ranking(1,11);
-		vecRanking[59] = new Ranking(1,12);
-		vecRanking[60] = new Ranking(2,6);
-		vecRanking[61] = new Ranking(8,1);
-		vecRanking[62] = new Ranking(3,5);
-		vecRanking[63] = new Ranking(9,1);
-		vecRanking[64] = new Ranking(5,2);
-		vecRanking[65] = new Ranking(4,3);
-		vecRanking[66] = new Ranking(10,1);
-		vecRanking[67] = new Ranking(2,7);
-		vecRanking[68] = new Ranking(4,5);
-		vecRanking[69] = new Ranking(2,8);
-		vecRanking[70] = new Ranking(11,1);
-		vecRanking[71] = new Ranking(3,6);
-		vecRanking[72] = new Ranking(2,9);
-		vecRanking[73] = new Ranking(12,1);
-		vecRanking[74] = new Ranking(8,2);
-		vecRanking[75] = new Ranking(2,10);
-		vecRanking[76] = new Ranking(5,3);
-		vecRanking[77] = new Ranking(2,11);
-		vecRanking[78] = new Ranking(4,6);
-		vecRanking[79] = new Ranking(3,7);
-		vecRanking[80] = new Ranking(7,2);
-		vecRanking[81] = new Ranking(2,12);
-		vecRanking[82] = new Ranking(8,2);
-		vecRanking[83] = new Ranking(5,6);
-		vecRanking[84] = new Ranking(9,2);
-		vecRanking[85] = new Ranking(6,3);
-		vecRanking[86] = new Ranking(5,4);
-		vecRanking[87] = new Ranking(3,8);
-		vecRanking[88] = new Ranking(4,7);
-		vecRanking[89] = new Ranking(3,9);	
-		vecRanking[90] = new Ranking(10,2);
-		vecRanking[91] = new Ranking(3,10);
-		vecRanking[92] = new Ranking(7,3);
-		vecRanking[93] = new Ranking(11,2);
-		vecRanking[94] = new Ranking(5,7);
-		vecRanking[95] = new Ranking(4,6);
-		vecRanking[96] = new Ranking(3,11);
-		vecRanking[97] = new Ranking(4,8);
-		vecRanking[98] = new Ranking(12,2);
-		vecRanking[99] = new Ranking(3,12);
-		vecRanking[100] = new Ranking(6,7);
-		vecRanking[101] = new Ranking(8,3);
-		vecRanking[102] = new Ranking(6,5);
-		vecRanking[103] = new Ranking(7,4);
-		vecRanking[104] = new Ranking(5,8);
-		vecRanking[105] = new Ranking(9,3);
-		vecRanking[106] = new Ranking(4,9);
-		vecRanking[107] = new Ranking(4,10);
-		vecRanking[108] = new Ranking(6,8);
-		vecRanking[109] = new Ranking(10,3);
-		vecRanking[110] = new Ranking(8,4);
-		vecRanking[111] = new Ranking(7,5);
-		vecRanking[112] = new Ranking(4,11);
-		vecRanking[113] = new Ranking(7,8);
-		vecRanking[114] = new Ranking(5,9);
-		vecRanking[115] = new Ranking(11,3);
-		vecRanking[116] = new Ranking(4,12);
-		vecRanking[117] = new Ranking(7,6);
-		vecRanking[118] = new Ranking(6,9);
-		vecRanking[119] = new Ranking(8,5);
-		vecRanking[120] = new Ranking(9,4);
-		vecRanking[121] = new Ranking(12,3);
-		vecRanking[122] = new Ranking(7,9);
-		vecRanking[123] = new Ranking(6,10);
-		vecRanking[124] = new Ranking(10,4);
-		vecRanking[125] = new Ranking(8,9);
-		vecRanking[126] = new Ranking(8,6);
-		vecRanking[127] = new Ranking(5,11);
-		vecRanking[128] = new Ranking(6,10);
-		vecRanking[129] = new Ranking(9,5);
-		vecRanking[130] = new Ranking(11,4);
-		vecRanking[131] = new Ranking(8,7);
-		vecRanking[132] = new Ranking(5,12);
-		vecRanking[133] = new Ranking(7,10);	
-		vecRanking[134] = new Ranking(9,10);
-		vecRanking[135] = new Ranking(12,4);
-		vecRanking[136] = new Ranking(9,6);
-		vecRanking[137] = new Ranking(8,10);
-		vecRanking[138] = new Ranking(6,11);
-		vecRanking[139] = new Ranking(10,5);
-		vecRanking[140] = new Ranking(9,7);
-		vecRanking[141] = new Ranking(6,12);
-		vecRanking[142] = new Ranking(7,11);
-		vecRanking[143] = new Ranking(11,5);
-		vecRanking[144] = new Ranking(9,8);
-		vecRanking[145] = new Ranking(9,11);
-		vecRanking[146] = new Ranking(8,11);
-		vecRanking[147] = new Ranking(10,6);
-		vecRanking[148] = new Ranking(12,5);
-		vecRanking[149] = new Ranking(10,11);
-		vecRanking[150] = new Ranking(10,7);
-		vecRanking[151] = new Ranking(7,12);
-		vecRanking[152] = new Ranking(10,9);
-		vecRanking[153] = new Ranking(19,8);
-		vecRanking[154] = new Ranking(9,12);
-		vecRanking[155] = new Ranking(8,12);		
-		vecRanking[156] = new Ranking(11,6);
-		vecRanking[157] = new Ranking(10,12);
-		vecRanking[158] = new Ranking(12,6);
-		vecRanking[159] = new Ranking(11,7);
-		vecRanking[160] = new Ranking(11,9);
-		vecRanking[161] = new Ranking(11,8);
-		vecRanking[162] = new Ranking(11,12);
-		vecRanking[163] = new Ranking(11,10);
-		vecRanking[164] = new Ranking(12,7);
-		vecRanking[165] = new Ranking(12,9);
-		vecRanking[166] = new Ranking(12,8);
-		vecRanking[167] = new Ranking(12,11);
+	public PilaPosiciones getPosiciones(int porcentaje) {
+		this.value = (porcentaje * 169) / 100;
+		for (int i = 0; i < this.value; i++) {
+			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
 		}
+		return this.pila;
+	}
 	
 
+	void rellenaArray(){
+		
+		vecPosicion[0] = new Posicion(0,0);
+		vecPosicion[1] = new Posicion(1,1);
+		vecPosicion[2] = new Posicion(0,1);
+		vecPosicion[3] = new Posicion(2,2);
+		vecPosicion[4] = new Posicion(1,0);
+		vecPosicion[5] = new Posicion(3,3);
+		vecPosicion[6] = new Posicion(0,2);
+		vecPosicion[7] = new Posicion(4,4);
+		vecPosicion[8] = new Posicion(2,0);
+		vecPosicion[9] = new Posicion(5,5);
+		vecPosicion[10] = new Posicion(0,3);
+		vecPosicion[11] = new Posicion(6,6);
+		vecPosicion[12] = new Posicion(0,4);
+		vecPosicion[13] = new Posicion(3,0);
+		vecPosicion[14] = new Posicion(7,7);
+		vecPosicion[15] = new Posicion(8,8);
+		vecPosicion[16] = new Posicion(4,0);
+		vecPosicion[17] = new Posicion(5,0);
+		vecPosicion[18] = new Posicion(9,9);
+		vecPosicion[19] = new Posicion(0,6);
+		vecPosicion[20] = new Posicion(1,2);
+		vecPosicion[21] = new Posicion(10,10);
+		vecPosicion[22] = new Posicion(0,5);
+		vecPosicion[23] = new Posicion(0,7);
+		vecPosicion[24] = new Posicion(1,3);
+		vecPosicion[25] = new Posicion(0,9);
+		vecPosicion[26] = new Posicion(6,0);
+		vecPosicion[27] = new Posicion(0,8);
+		vecPosicion[28] = new Posicion(0,10);
+		vecPosicion[29] = new Posicion(11,11);
+		vecPosicion[30] = new Posicion(1,4);
+		vecPosicion[31] = new Posicion(7,0);
+		vecPosicion[32] = new Posicion(0,11);
+		vecPosicion[33] = new Posicion(2,1);
+		vecPosicion[34] = new Posicion(0,12);
+		vecPosicion[35] = new Posicion(9,0);
+		vecPosicion[36] = new Posicion(8,0);
+		vecPosicion[37] = new Posicion(10,0);
+		vecPosicion[38] = new Posicion(3,1);
+		vecPosicion[39] = new Posicion(2,3);
+		vecPosicion[40] = new Posicion(11,0);
+		vecPosicion[41] = new Posicion(12,12);
+		vecPosicion[42] = new Posicion(1,5);
+		vecPosicion[43] = new Posicion(12,0);
+		vecPosicion[44] = new Posicion(4,1);
+		vecPosicion[45] = new Posicion(2,4);	
+		vecPosicion[46] = new Posicion(6,1);
+		vecPosicion[47] = new Posicion(1,7);
+		vecPosicion[48] = new Posicion(3,4);
+		vecPosicion[49] = new Posicion(5,1);
+		vecPosicion[50] = new Posicion(1,8);
+		vecPosicion[51] = new Posicion(3,2);
+		vecPosicion[52] = new Posicion(2,5);
+		vecPosicion[53] = new Posicion(1,9);
+		vecPosicion[54] = new Posicion(1,6);
+		vecPosicion[55] = new Posicion(1,10);
+		vecPosicion[56] = new Posicion(4,2);
+		vecPosicion[57] = new Posicion(7,1);
+		vecPosicion[58] = new Posicion(1,11);
+		vecPosicion[59] = new Posicion(1,12);
+		vecPosicion[60] = new Posicion(2,8);
+		vecPosicion[61] = new Posicion(8,1);
+		vecPosicion[62] = new Posicion(3,5);
+		vecPosicion[63] = new Posicion(9,1);
+		vecPosicion[64] = new Posicion(5,2);
+		vecPosicion[65] = new Posicion(4,3);
+		vecPosicion[66] = new Posicion(10,1);
+		vecPosicion[67] = new Posicion(2,7);
+		vecPosicion[68] = new Posicion(4,5);
+		vecPosicion[69] = new Posicion(2,6);
+		vecPosicion[70] = new Posicion(11,1);
+		vecPosicion[71] = new Posicion(3,6);
+		vecPosicion[72] = new Posicion(2,9);
+		vecPosicion[73] = new Posicion(12,1);
+		vecPosicion[74] = new Posicion(6,2);
+		vecPosicion[75] = new Posicion(2,10);
+		vecPosicion[76] = new Posicion(5,3);
+		vecPosicion[77] = new Posicion(2,11);
+		vecPosicion[78] = new Posicion(6,4);
+		vecPosicion[79] = new Posicion(3,7);
+		vecPosicion[80] = new Posicion(7,2);
+		vecPosicion[81] = new Posicion(2,12);
+		vecPosicion[82] = new Posicion(8,2);
+		vecPosicion[83] = new Posicion(5,6);
+		vecPosicion[84] = new Posicion(9,2);
+		vecPosicion[85] = new Posicion(6,3);
+		vecPosicion[86] = new Posicion(5,4);
+		vecPosicion[87] = new Posicion(3,8);
+		vecPosicion[88] = new Posicion(4,7);
+		vecPosicion[89] = new Posicion(3,9);	
+		vecPosicion[90] = new Posicion(10,2);
+		vecPosicion[91] = new Posicion(3,10);
+		vecPosicion[92] = new Posicion(7,3);
+		vecPosicion[93] = new Posicion(11,2);
+		vecPosicion[94] = new Posicion(5,7);
+		vecPosicion[95] = new Posicion(4,6);
+		vecPosicion[96] = new Posicion(3,11);
+		vecPosicion[97] = new Posicion(4,8);
+		vecPosicion[98] = new Posicion(12,2);
+		vecPosicion[99] = new Posicion(3,12);
+		vecPosicion[100] = new Posicion(6,7);
+		vecPosicion[101] = new Posicion(8,3);
+		vecPosicion[102] = new Posicion(6,5);
+		vecPosicion[103] = new Posicion(7,4);
+		vecPosicion[104] = new Posicion(5,8);
+		vecPosicion[105] = new Posicion(9,3);
+		vecPosicion[106] = new Posicion(4,9);
+		vecPosicion[107] = new Posicion(4,10);
+		vecPosicion[108] = new Posicion(6,8);
+		vecPosicion[109] = new Posicion(10,3);
+		vecPosicion[110] = new Posicion(8,4);
+		vecPosicion[111] = new Posicion(7,5);
+		vecPosicion[112] = new Posicion(4,11);
+		vecPosicion[113] = new Posicion(7,8);
+		vecPosicion[114] = new Posicion(5,9);
+		vecPosicion[115] = new Posicion(11,3);
+		vecPosicion[116] = new Posicion(4,12);
+		vecPosicion[117] = new Posicion(7,6);
+		vecPosicion[118] = new Posicion(6,9);
+		vecPosicion[119] = new Posicion(8,5);
+		vecPosicion[120] = new Posicion(9,4);
+		vecPosicion[121] = new Posicion(12,3);
+		vecPosicion[122] = new Posicion(7,9);
+		vecPosicion[123] = new Posicion(5,10);
+		vecPosicion[124] = new Posicion(10,4);
+		vecPosicion[125] = new Posicion(8,9);
+		vecPosicion[126] = new Posicion(8,6);
+		vecPosicion[127] = new Posicion(5,11);
+		vecPosicion[128] = new Posicion(6,10);
+		vecPosicion[129] = new Posicion(9,5);
+		vecPosicion[130] = new Posicion(11,4);
+		vecPosicion[131] = new Posicion(8,7);
+		vecPosicion[132] = new Posicion(5,12);
+		vecPosicion[133] = new Posicion(7,10);	
+		vecPosicion[134] = new Posicion(9,10);
+		vecPosicion[135] = new Posicion(12,4);
+		vecPosicion[136] = new Posicion(9,6);
+		vecPosicion[137] = new Posicion(8,10);
+		vecPosicion[138] = new Posicion(6,11);
+		vecPosicion[139] = new Posicion(10,5);
+		vecPosicion[140] = new Posicion(9,7);
+		vecPosicion[141] = new Posicion(6,12);
+		vecPosicion[142] = new Posicion(7,11);
+		vecPosicion[143] = new Posicion(11,5);
+		vecPosicion[144] = new Posicion(9,8);
+		vecPosicion[145] = new Posicion(9,11);
+		vecPosicion[146] = new Posicion(8,11);
+		vecPosicion[147] = new Posicion(10,6);
+		vecPosicion[148] = new Posicion(12,5);
+		vecPosicion[149] = new Posicion(10,11);
+		vecPosicion[150] = new Posicion(10,7);
+		vecPosicion[151] = new Posicion(7,12);
+		vecPosicion[152] = new Posicion(10,9);
+		vecPosicion[153] = new Posicion(10,8);
+		vecPosicion[154] = new Posicion(9,12);
+		vecPosicion[155] = new Posicion(8,12);		
+		vecPosicion[156] = new Posicion(11,6);
+		vecPosicion[157] = new Posicion(10,12);
+		vecPosicion[158] = new Posicion(12,6);
+		vecPosicion[159] = new Posicion(11,7);
+		vecPosicion[160] = new Posicion(11,9);
+		vecPosicion[161] = new Posicion(11,8);
+		vecPosicion[162] = new Posicion(11,12);
+		vecPosicion[163] = new Posicion(11,10);
+		vecPosicion[164] = new Posicion(12,7);
+		vecPosicion[165] = new Posicion(12,9);
+		vecPosicion[166] = new Posicion(12,8);
+		vecPosicion[167] = new Posicion(12,10);
+		vecPosicion[168] = new Posicion(12,11);
+	}
+	
+	
+	
+	public void addObserver(RankingObserver obs) {
+		this.rObserver.add(obs);
+	}
+	
+	public void notifyNewRanking(PilaPosiciones pila) {
+		for (RankingObserver o : this.rObserver){
+			o.hayRanking(pila);
+		}
+	}
 }

@@ -24,8 +24,9 @@ import main.PilaPosiciones;
 import main.Posicion;
 import main.RankingChurukov;
 import observers.RangoObserver;
+import observers.RankingObserver;
 
-public class PanelGrid extends JPanel implements ActionListener, RangoObserver{
+public class PanelGrid extends JPanel implements ActionListener, RangoObserver, RankingObserver{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -248,7 +249,8 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver{
 //    	updateUI();
 //    	repaint();
 		
-    	this.controller.addObserver(this);
+    	this.controller.addRangoObserver(this);
+    	this.controller.addRankingObserver(this);
 	}
 	
 	
@@ -310,6 +312,34 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver{
 		posiciones.resetContador();
 		
 		updateUI();
+	}
+
+
+	@Override
+	public void hayRanking(PilaPosiciones pila) {
+		// TODO Auto-generated method stub
+		Posicion pos = new Posicion();
+		
+		// Primero dejo el tablero en su estado inicial
+		resetGrid();
+		
+		// Pinto las cartas del rango correspondiente
+		for (int i = 0; i < pila.getContador();i++){
+			pos = pila.extractPosition();
+			this.pares[pos.getFila()][pos.getColumna()].setBackground(Color.YELLOW);
+			this.pares[pos.getFila()][pos.getColumna()].repaint();
+		}
+		
+		pila.resetContador();
+		
+		updateUI();
+	}
+
+
+	@Override
+	public void addObserver(RankingObserver obs) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
