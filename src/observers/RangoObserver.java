@@ -4,6 +4,10 @@ import main.PilaPosiciones;
 
 public interface RangoObserver {
 	
-	void hayRangos(PilaPosiciones posiciones);
+	public void hayRangos(PilaPosiciones posiciones);
+	
+	public void pintaBroadways();
+	
+	public void cleanGrid();
 
 }

@@ -25,7 +25,30 @@ public class ParserRangos {
 		this.pila = new PilaPosiciones();
 	}
 	
+
 	
+	public void damePosicoines(int opcion) {
+		
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 13; j++) {
+				
+				if(opcion == 1 && j == i) { // Pares
+					this.pila.addPosicion(j, i);
+				}
+				else if(opcion == 2 && j > i) { // Suited
+					this.pila.addPosicion(j, i);
+				}
+				else if(opcion == 3 && i == 0){ // Broadway (Ases suites)
+					this.pila.addPosicion(j, i);
+				}
+				if(opcion == 3 && j == 0) { // Broadway (Ases offsuited)
+					this.pila.addPosicion(j, i);
+				}
+			}
+		}
+		
+		notifyHayPosiciones();
+	}
 	
 	
 	
@@ -49,7 +72,6 @@ public class ParserRangos {
 					carta2 = new Carta(token[1]);
 					int j = carta1.getCodigo();
 					while(j < 15){                
-//						paresDeCartas[posArray] = new Posicion(ancho - j,ancho - j);//(ancho - j) * ancho + (ancho - j);
 						this.pila.addPosicion(ancho - j, ancho - j); // col, fil
 						j++;
 						posArray++;
@@ -66,7 +88,6 @@ public class ParserRangos {
 						int p = carta1.getCodigo();
 						
 						while(p <= fila){
-//							paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
 							this.pila.addPosicion(ancho-p, ancho-fila); // col, fil
 							p++;
 							posArray++;
@@ -79,7 +100,6 @@ public class ParserRangos {
 						col = carta2.getCodigo();
 						int p = carta1.getCodigo();
 						while(p <= col){
-//							paresDeCartas[posArray] = new Posicion(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
 							this.pila.addPosicion(ancho-col, ancho-p);
 							p++;
 							posArray++;
@@ -98,7 +118,6 @@ public class ParserRangos {
 					int p = carta2.getCodigo();
 					fila = carta3.getCodigo();
 					while(p <= j){
-//						paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-p);//(ancho-fila)*ancho + (ancho-p);
 						this.pila.addPosicion(ancho-p, ancho-fila); // col, fil
 						p++;
 						posArray++;
@@ -113,7 +132,6 @@ public class ParserRangos {
 					int p = carta2.getCodigo();
 					col = carta3.getCodigo();
 					while(p <= j){
-//						paresDeCartas[posArray] = new Posicion(ancho-p,ancho-col);//(ancho-p)+ancho + (ancho-col);
 						this.pila.addPosicion(ancho-col, ancho-p);
 						p++;
 						posArray++;
@@ -127,7 +145,6 @@ public class ParserRangos {
 					carta1 = new Carta(token[1]);
 					fila = carta1.getCodigo();
 					col = carta2.getCodigo();
-	//				paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-col);//(ancho-fila)+ancho + (ancho-col);
 					this.pila.addPosicion(ancho-fila, ancho-col);
 					posArray++;
 				}else{
@@ -135,7 +152,6 @@ public class ParserRangos {
 					carta1 = new Carta(token[1]);
 					fila = carta2.getCodigo();
 					col = carta1.getCodigo();
-	//				paresDeCartas[posArray] = new Posicion(ancho-fila,ancho-col);//(ancho-fila)+ancho + (ancho-col);
 					this.pila.addPosicion(ancho-fila, ancho-col);
 					posArray++;
 				}
@@ -153,9 +169,20 @@ public class ParserRangos {
 		return this.pila;
 	}
  	
+ 	
+ 	
  	public PilaPosiciones getPila() {
 		return pila;
 	}
+ 	
+ 	public boolean dimeBroadway(String cartas) {
+ 		
+ 		char[] token = cartas.toCharArray();
+ 		carta1 = new Carta(token[0]);
+		carta2 = new Carta(token[1]);
+		
+		return (carta1.getCodigo() >= 10 && carta2.getCodigo() >= 10 || carta1.getCodigo() == carta2.getCodigo());
+ 	}
 		
 	
 	
@@ -176,7 +203,26 @@ public class ParserRangos {
 		
 	}
 	
+	public void notifyHayPosiciones() {
+		
+		for (RangoObserver o : this.rObserver){
+			o.hayRangos(this.pila);
+		}
+	}
 	
+	
+	public void notifyClean() {
+		for (RangoObserver o : this.rObserver){
+			o.cleanGrid();;
+		}
+	}
+	
+	
+	public void notifyBroadways() {
+		for (RangoObserver o : this.rObserver){
+			o.pintaBroadways();
+		}
+	}
 	
 	
 	

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -19,7 +20,7 @@ import controlador.Controller;
 import main.PilaPosiciones;
 import observers.RangoObserver;
 
-public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
+public class PanelOeste extends JPanel implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -28,6 +29,8 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 	private JTextField[] rangopls;
 	private String rango;
 	private Controller controller;
+	private JComboBox<String> comboBox;
+	private String[] ops = {"Sklansky-Chubukov", "Janda"};
 	
 	public PanelOeste(Controller controller) {
 		
@@ -41,6 +44,8 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 		this.players = new JButton[9];
 		this.rangopls = new JTextField[9];
 		this.rango = new String();
+		this.comboBox = new JComboBox<String>(ops);
+		
 		
 		this.setLayout(new GridLayout(2, 0));
 		
@@ -75,8 +80,9 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 			}
 			
 			this.players[i] = player;
-			this.players[i].setEnabled(false);
 			this.rangopls[i] = rango;
+			
+			this.players[i].addActionListener(this);
 			
 			norte.add(player);
 			norte.add(rango);
@@ -90,8 +96,16 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 		this.evaluate = new JButton("Evaluate");
 		this.evaluate.setBounds(350, 200, 90, 30);
 		this.evaluate.setMargin(new Insets(1,1,1,1));
+		
+		this.comboBox.setBounds(320, 10, 150, 30);
+		
+		
 		this.evaluate.addActionListener(this);
+		this.comboBox.addActionListener(this);
+		
+		
 		norte.add(this.evaluate);
+		norte.add(this.comboBox);
 		
 		
 		
@@ -109,21 +123,31 @@ public class PanelOeste extends JPanel implements ActionListener, RangoObserver{
 		sur.add(vacio, BorderLayout.CENTER);
 		this.add(sur);
 		
-		this.controller.addRangoObserver(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == this.evaluate) {
-			this.rango = this.rangopls[0].getText();
-			this.controller.nuevoRango(this.rango);
+			try {
+				this.rango = this.rangopls[0].getText();
+				this.controller.nuevoRango(this.rango);
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+			
 		}
-	}
-
-	@Override
-	public void hayRangos(PilaPosiciones posiciones) {
-		// TODO Auto-generated method stub
+		
+		JComboBox<String> aux = (JComboBox<String>) e.getSource();
+		String g = (String)aux.getSelectedItem();
+		
+		if("Sklansky-Chubukov".equalsIgnoreCase(g)){
+			this.controller.setRanking(1);
+		}
+		else if ("Janda".equalsIgnoreCase(g)){
+			this.controller.setRanking(2);
+		}
 		
 	}
+
 }

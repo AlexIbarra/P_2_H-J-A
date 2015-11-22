@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,12 @@ public class PanelSliders extends JPanel implements ActionListener{
 	private JTextField porcentaje;
 	private int value;
 	private Controller controller;
-	StringBuilder porc;
+	private StringBuilder porc;
+	private JButton all;
+	private JButton anyPair;
+	private JButton anySuited;
+	private JButton anyBroadway;
+	private JButton clear;
 	
 	public PanelSliders(Controller contr) {
 		
@@ -56,26 +62,33 @@ public class PanelSliders extends JPanel implements ActionListener{
 		this.slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 		this.porcentaje = new JTextField(5);
 		this.porcentaje.setHorizontalAlignment(JTextField.CENTER);
-		JButton all = new JButton("All");
+		this.all = new JButton("All");
 		all.setMargin(new Insets(1,1,1,1));
-		JButton anyPair = new JButton("Any Pair");
+		this.anyPair = new JButton("Any Pair");
 		anyPair.setMargin(new Insets(1,1,1,1));
-		JButton anySuited = new JButton("Any Suited");
+		this.anySuited = new JButton("Any Suited");
 		anySuited.setMargin(new Insets(1,1,1,1));
-		JButton anyBroadway = new JButton("Any Broadway");	
+		this.anyBroadway = new JButton("Any Broadway");	
 		anyBroadway.setMargin(new Insets(1,1,1,1));
-		JButton clear = new JButton("Clear");
+		this.clear = new JButton("Clear");
 		clear.setMargin(new Insets(1,1,1,1));
+		
+		
+		this.all.addActionListener(this);
+		this.anyPair.addActionListener(this);
+		this.anySuited.addActionListener(this);
+		this.anyBroadway.addActionListener(this);
+		this.clear.addActionListener(this);
 		
 		
 		jpSlider.add(this.slider);
 		jpSlider.setBorder(new TitledBorder("RANGO"));
 		jpPorcentaje.add(this.porcentaje);
-		jpAll.add(all);
-		jpAnyPair.add(anyPair);
-		jpAnySuited.add(anySuited);
-		jpAnyBroadway.add(anyBroadway);
-		jpClear.add(clear);
+		jpAll.add(this.all);
+		jpAnyPair.add(this.anyPair);
+		jpAnySuited.add(this.anySuited);
+		jpAnyBroadway.add(this.anyBroadway);
+		jpClear.add(this.clear);
 		
 		
 		
@@ -107,12 +120,25 @@ public class PanelSliders extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
-		this.porcentaje.setText(Integer.toString(this.slider.getValue()));
-		this.porcentaje.repaint();
+//		this.slider.setValue(50);
 		
+		if(e.getSource() == this.all) {
+	  		controller.nuevoranking(100);	
+		}
+		else if(e.getSource() == this.anyPair) {
+			this.controller.damePosiciones(1);
+		}
+		else if(e.getSource() == this.anySuited) {
+			this.controller.damePosiciones(2);
+		}
+		else if(e.getSource() == this.anyBroadway) {
+			this.controller.dameBroadways();
+		}
+		else if(e.getSource() == this.clear)
+			this.controller.cleanGrid();
 		
+
 	}
 
 }

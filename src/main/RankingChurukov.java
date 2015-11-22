@@ -6,7 +6,7 @@ import java.util.Vector;
 import observers.RangoObserver;
 import observers.RankingObserver;
 
-public class RankingChurukov {
+public class RankingChurukov implements Ranking {
 	
 	
 	
@@ -25,7 +25,7 @@ public class RankingChurukov {
 	}
 	
 
-	
+	@Override
 	public PilaPosiciones getPosiciones(int porcentaje) {
 		this.value = (porcentaje * 169) / 100;
 		for (int i = 0; i < this.value; i++) {
@@ -34,8 +34,8 @@ public class RankingChurukov {
 		return this.pila;
 	}
 	
-
-	void rellenaArray(){
+	@Override
+	public void rellenaArray(){
 		
 		vecPosicion[0] = new Posicion(0,0);
 		vecPosicion[1] = new Posicion(1,1);
@@ -209,11 +209,12 @@ public class RankingChurukov {
 	}
 	
 	
-	
+	@Override
 	public void addObserver(RankingObserver obs) {
 		this.rObserver.add(obs);
 	}
 	
+	@Override
 	public void notifyNewRanking(PilaPosiciones pila) {
 		for (RankingObserver o : this.rObserver){
 			o.hayRanking(pila);

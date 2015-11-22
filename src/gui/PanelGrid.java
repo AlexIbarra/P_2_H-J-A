@@ -60,11 +60,11 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 				this.pares[j][i].setVerticalAlignment(SwingConstants.CENTER);
 				this.pares[j][i].setHorizontalAlignment(SwingConstants.CENTER);
 
-				if(j==i)
+				if(j==i) // Pares
 					this.pares[j][i].setBackground(Color.green);
-				else if(j>i)
+				else if(j>i) // Suited
 					this.pares[j][i].setBackground(Color.MAGENTA);
-				else
+				else // Off Suited
 					this.pares[j][i].setBackground(Color.cyan);
 				
 				this.pares[j][i].setOpaque(true);
@@ -340,6 +340,30 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 	public void addObserver(RankingObserver obs) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void cleanGrid() {
+		// TODO Auto-generated method stub
+		resetGrid();
+	}
+
+
+	@Override
+	public void pintaBroadways() {
+		// TODO Auto-generated method stub
+		resetGrid();
+		
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 13; j++) {
+				if(this.controller.dimeBroadway(this.pares[j][i].getText())) {
+					this.pares[j][i].setBackground(Color.YELLOW);
+					this.pares[j][i].repaint();
+				}
+					
+			}
+		}
 	}
 	
 	

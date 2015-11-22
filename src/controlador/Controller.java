@@ -3,13 +3,17 @@ package controlador;
 import main.ParserRangos;
 import main.PilaPosiciones;
 import main.Posicion;
+import main.Ranking;
 import main.RankingChurukov;
+import main.RankingJanda;
 import observers.RangoObserver;
 import observers.RankingObserver;
 
 public class Controller {
 	
 	private ParserRangos pRangos;
+	private Ranking rankings[];
+	private Ranking rankingActivo;
 	private RankingChurukov rChurukov;
 	private String rango;
 	
@@ -17,7 +21,18 @@ public class Controller {
 
 	public Controller() {
 		this.pRangos = new ParserRangos();
-		this.rChurukov = new RankingChurukov();
+		this.rankings  = new Ranking[2];
+		this.rankings[0] = new RankingChurukov();
+		this.rankings[1] = new RankingJanda();
+		this.rankingActivo = this.rankings[0]; // set Churukov default
+		
+	}
+	
+	public void setRanking(int opcion) {
+		if(opcion == 1)
+			this.rankingActivo = this.rankings[0];
+		else if(opcion == 2)
+			this.rankingActivo = this.rankings[1];
 	}
 	
 	public String getRango() {
@@ -31,6 +46,10 @@ public class Controller {
 	public PilaPosiciones parse(String rango) {
 		return this.pRangos.parseRangos(rango);
 	}
+	
+	public boolean dimeBroadway(String cartas) {
+		return this.pRangos.dimeBroadway(cartas);
+	}
 
 	
 	
@@ -40,7 +59,7 @@ public class Controller {
 	}
 	
 	public void addRankingObserver(RankingObserver obs){
-		this.rChurukov.addObserver(obs);
+		this.rankingActivo.addObserver(obs);
 	}
 	
 	
@@ -49,7 +68,19 @@ public class Controller {
 	}
 	
 	public void nuevoranking(int porcentaje) {
-		this.rChurukov.notifyNewRanking(this.rChurukov.getPosiciones(porcentaje));
+		this.rankingActivo.notifyNewRanking(this.rankingActivo.getPosiciones(porcentaje));
+	}
+	
+	public void damePosiciones(int opcion) {
+		this.pRangos.damePosicoines(opcion);
+	}
+	
+	public void cleanGrid() {
+		this.pRangos.notifyClean();
+	}
+	
+	public void dameBroadways() {
+		this.pRangos.notifyBroadways();
 	}
 	
 }
