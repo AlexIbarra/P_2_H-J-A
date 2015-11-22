@@ -35,6 +35,10 @@ public class Controller {
 			this.rankingActivo = this.rankings[1];
 	}
 	
+	public Ranking getRanking() {
+		return rankingActivo;
+	}
+	
 	public String getRango() {
 		return rango;
 	}

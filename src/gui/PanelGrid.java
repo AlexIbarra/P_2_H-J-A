@@ -273,17 +273,22 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		Vector<String> seleccionados = new Vector<String>();
 		for (int i = 0; i < 13;i++){
 			for (int j = 0; j < 13; j++){
 				if(e.getSource() == this.pares[j][i]){
-					if(this.pares[j][i].getBackground() != Color.YELLOW)
+					if(this.pares[j][i].getBackground() != Color.YELLOW) {
 						this.pares[j][i].setBackground(Color.YELLOW);
+						seleccionados.add(this.pares[j][i].getText());
+					}
 					else if(j==i)
 						this.pares[j][i].setBackground(Color.green);
 					else if(j>i)
 						this.pares[j][i].setBackground(Color.MAGENTA);
 					else
 						this.pares[j][i].setBackground(Color.cyan);
+					
 				}
 			}
 		}

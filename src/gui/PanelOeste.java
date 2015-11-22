@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import controlador.Controller;
+import jugadores.Jugador;
 import main.PilaPosiciones;
 import observers.RangoObserver;
 
@@ -26,26 +27,30 @@ public class PanelOeste extends JPanel implements ActionListener{
 	
 	private JButton evaluate;
 	private JButton[] players;
+	private Jugador[] jugadores;
 	private JTextField[] rangopls;
 	private String rango;
+	private JTextArea salida;
 	private Controller controller;
 	private JComboBox<String> comboBox;
 	private String[] ops = {"Sklansky-Chubukov", "Janda"};
 	
-	public PanelOeste(Controller controller) {
+	public PanelOeste(Controller contr) {
 		
-		this.controller = controller;
+
+		this.controller = contr;
 		
 		JButton player;
 		JTextField rango;
 		StringBuilder namePlayer = new StringBuilder();
 		int tam=0;
 		
+		this.jugadores = new Jugador[9];
 		this.players = new JButton[9];
 		this.rangopls = new JTextField[9];
 		this.rango = new String();
 		this.comboBox = new JComboBox<String>(ops);
-		
+		this.comboBox.setSelectedIndex(0);
 		
 		this.setLayout(new GridLayout(2, 0));
 		
@@ -55,7 +60,9 @@ public class PanelOeste extends JPanel implements ActionListener{
 		for(int i=0; i < 9; i++) {
 			
 			namePlayer.append("Player ");
-			namePlayer.append(i);
+			namePlayer.append(i+1);
+			
+			this.jugadores[i] = new Jugador(i);
 			
 			if(i==0){
 				tam = 10;
@@ -100,8 +107,28 @@ public class PanelOeste extends JPanel implements ActionListener{
 		this.comboBox.setBounds(320, 10, 150, 30);
 		
 		
-		this.evaluate.addActionListener(this);
-		this.comboBox.addActionListener(this);
+		this.evaluate.addActionListener(this);	
+		this.comboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	JComboBox<String> aux;
+				
+				if((aux = (JComboBox<String>)e.getSource()) == comboBox) {
+					
+					String selectedRanking = (String)aux.getSelectedItem();
+					
+					System.out.println(selectedRanking);
+				
+					if("Sklansky-Chubukov".equalsIgnoreCase(selectedRanking)){
+						controller.setRanking(1);
+					}
+					else if ("Janda".equalsIgnoreCase(selectedRanking)){
+						controller.setRanking(2);
+					}
+				}
+		        
+		    }
+		});
 		
 		
 		norte.add(this.evaluate);
@@ -115,7 +142,7 @@ public class PanelOeste extends JPanel implements ActionListener{
 		JPanel vacio = new JPanel();
 		JPanel vacio2 = new JPanel();
 		sur.setLayout(new BorderLayout());
-		JTextArea salida = new JTextArea(15,50);
+		this.salida = new JTextArea(15,50);
 		vacio2.setLayout(new BorderLayout());
 		vacio2.add(salida);
 		vacio2.setBorder(new TitledBorder("Salida"));
@@ -129,24 +156,43 @@ public class PanelOeste extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == this.evaluate) {
-			try {
-				this.rango = this.rangopls[0].getText();
-				this.controller.nuevoRango(this.rango);
-			} catch (Exception e2) {
-				// TODO: handle exception
+			
+			for (int i = 0; i < players.length; i++) {
+				if(this.players[i] == e.getSource()){
+					// marco acccion al player[i] como OR
+					this.jugadores[i].setRanking(this.controller.getRanking());
+					this.jugadores[i].setJuega(true);
+				}
+				else {// Si no, marco accion al player[i] como FOLD
+					this.jugadores[i].setJuega(false);
+				}
+				// Recojo las manos de cada player independientemente de si has hecho OR o FOLD
+				try {
+					this.rango = this.rangopls[i].getText();
+					this.controller.nuevoRango(this.rango);
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				this.players[i].setEnabled(true);
+				this.rangopls[i].setText("");
 			}
 			
 		}
 		
-		JComboBox<String> aux = (JComboBox<String>) e.getSource();
-		String g = (String)aux.getSelectedItem();
+		for (int i = 0; i < players.length; i++) {
+			if(this.players[i] == e.getSource()) {
+				try {
+					this.players[i].setEnabled(false);
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+				
+			}
+		}
 		
-		if("Sklansky-Chubukov".equalsIgnoreCase(g)){
-			this.controller.setRanking(1);
-		}
-		else if ("Janda".equalsIgnoreCase(g)){
-			this.controller.setRanking(2);
-		}
+		
+		
+		
 		
 	}
 
