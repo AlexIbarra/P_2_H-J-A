@@ -1,17 +1,17 @@
 package controlador;
 
 import main.ParserRangos;
+import main.ParserRankings;
 import main.PilaPosiciones;
 import main.Posicion;
-import main.Ranking;
-import main.RankingChurukov;
-import main.RankingJanda;
 import observers.RangoObserver;
 import observers.RankingObserver;
+import ranking.*;
 
 public class Controller {
 	
 	private ParserRangos pRangos;
+	private ParserRankings pRankings;
 	private Ranking rankings[];
 	private Ranking rankingActivo;
 	private RankingChurukov rChurukov;
@@ -21,11 +21,31 @@ public class Controller {
 
 	public Controller() {
 		this.pRangos = new ParserRangos();
-		this.rankings  = new Ranking[2];
+		this.pRankings = new ParserRankings();
+		this.rankings  = new Ranking[3];
 		this.rankings[0] = new RankingChurukov();
 		this.rankings[1] = new RankingJanda();
+		this.rankings[2] = new RankingMa();
 		this.rankingActivo = this.rankings[0]; // set Churukov default
 		
+	}
+	
+	
+	
+	
+	
+	public void evaluaRango(String mano, String pos, String accion){
+		// parsera el fichero y devolver los string con los datos
+		String[] salida = new String[4];
+		this.pRankings.setRango(this.rankingActivo.toString());
+		salida[0] = this.rankingActivo.toString();
+		this.pRankings.setManoJugada(mano);
+		salida[1] = mano;
+		this.pRankings.setPosicion(pos);
+		salida[2] = pos;
+		this.pRankings.setOR(accion);
+		salida[3] = accion;
+		this.pRankings.notifyJugadaEvaluada(salida, this.pRankings.Resultado());
 	}
 	
 	public void setRanking(int opcion) {
@@ -33,6 +53,8 @@ public class Controller {
 			this.rankingActivo = this.rankings[0];
 		else if(opcion == 2)
 			this.rankingActivo = this.rankings[1];
+		else if(opcion == 3)
+			this.rankingActivo = this.rankings[2];
 	}
 	
 	public Ranking getRanking() {
@@ -63,6 +85,7 @@ public class Controller {
 	}
 	
 	public void addRankingObserver(RankingObserver obs){
+		this.pRankings.addObserver(obs);
 		this.rankingActivo.addObserver(obs);
 	}
 	
@@ -85,6 +108,10 @@ public class Controller {
 	
 	public void dameBroadways() {
 		this.pRangos.notifyBroadways();
+	}
+	
+	public void addSeleccionado(String selec) {
+		this.pRankings.addSeleccionado(selec);
 	}
 	
 }

@@ -6,11 +6,21 @@ import main.PilaPosiciones;
 import main.Posicion;
 import observers.RankingObserver;
 
-public class RankingMa {
+public class RankingMa implements Ranking{
 	private Posicion[] vecPosicion;
 	private PilaPosiciones pila;
 	private int value;
 	private Vector<RankingObserver> rObserver;
+	
+	public RankingMa(){
+		this.pila = new PilaPosiciones();
+		this.value = 0;
+		this.rObserver = new Vector<RankingObserver>();
+		this.vecPosicion = new Posicion[109];
+		rellenaArray();
+	}
+	
+	
 	
 	public PilaPosiciones getPosiciones(int posicion){
 		if(posicion == 0)
@@ -35,13 +45,7 @@ public class RankingMa {
 		return this.pila;
 	}
 	
-	public RankingMa(){
-		this.pila = new PilaPosiciones();
-		this.value = 0;
-		this.rObserver = new Vector<RankingObserver>();
-		this.vecPosicion = new Posicion[109];
-		rellenaArray();
-	}
+	
 	public void addObserver(RankingObserver obs) {
 		this.rObserver.add(obs);
 	}
@@ -51,7 +55,7 @@ public class RankingMa {
 		}
 	}
 	
-	void rellenaArray(){
+	public void rellenaArray(){
 		
 		vecPosicion[0]= new Posicion(0,0);
 		vecPosicion[1]= new Posicion(1,1);
@@ -164,5 +168,9 @@ public class RankingMa {
 		vecPosicion[108]= new Posicion(1,10);//Rango de Apertura BTN SB
 		}
 	
+	
+	public String toString() {
+		return "Ma";
+	}
 
 }

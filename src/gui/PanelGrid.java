@@ -22,7 +22,6 @@ import javax.swing.border.Border;
 import controlador.Controller;
 import main.PilaPosiciones;
 import main.Posicion;
-import main.RankingChurukov;
 import observers.RangoObserver;
 import observers.RankingObserver;
 
@@ -280,7 +279,8 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 				if(e.getSource() == this.pares[j][i]){
 					if(this.pares[j][i].getBackground() != Color.YELLOW) {
 						this.pares[j][i].setBackground(Color.YELLOW);
-						seleccionados.add(this.pares[j][i].getText());
+//						seleccionados.add(this.pares[j][i].getText());
+						this.controller.addSeleccionado(this.pares[j][i].getText());
 					}
 					else if(j==i)
 						this.pares[j][i].setBackground(Color.green);
@@ -369,6 +369,20 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 					
 			}
 		}
+	}
+
+
+	@Override
+	public void jugadaEvaluada(String[] salida, boolean res) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void haySeleccionado(Vector<String> select) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

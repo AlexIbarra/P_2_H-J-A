@@ -212,4 +212,8 @@ public class RankingChurukov implements Ranking {
 			o.hayRanking(pila);
 		}
 	}
+	
+	public String toString() {
+		return "Sklansky-Chubukov";
+	}
 }

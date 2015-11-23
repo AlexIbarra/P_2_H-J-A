@@ -13,26 +13,30 @@ public class RankingJanda implements Ranking{
 	private Vector<RankingObserver> rObserver;
 	
 	public PilaPosiciones getPosiciones(int posicion){
-		if(posicion == 0)
+		
+		if(posicion == 0) //UTG
 		{
-			this.value = 34;
+			this.value = 24; // 34
 		}
-		else if (posicion == 1)
+		else if (posicion == 1) //UTG+1
 		{
-			this.value = 43;
+			this.value = 30; // 43
 		}
-		else if (posicion == 2)
+		else if (posicion == 2) //MP
 		{
-			this.value = 58;
+			this.value = 41; // 58
 		}
-		else if (posicion == 3)
+		else if (posicion == 3)// BTN
 		{
-			this.value = 96;
+			this.value = 80; // 96
 		}
-		else if (posicion == 4)
+		else if (posicion == 4) // SB
 		{
-			this.value = 79;
+			this.value = 62;
 		}
+		
+		
+		
 		for (int i = 0; i < this.value; i++) {
 			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
 		}
@@ -155,5 +159,8 @@ public class RankingJanda implements Ranking{
 		vecPosicion[95]= new Posicion(11,10);//Rango de Apertura BTN
 		}
 	
+	public String toString() {
+		return "Janda";
+	}
 
 }

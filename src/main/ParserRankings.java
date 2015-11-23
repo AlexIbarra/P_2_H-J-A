@@ -1,23 +1,88 @@
 package main;
 
+import java.io.IOException;
+import java.util.Vector;
+
+import IO.FileIn;
+import observers.RangoObserver;
+import observers.RankingObserver;
 import ranking.RankingJanda;
 import ranking.RankingMa;
 import ranking.RankingRock;
 import ranking.RankingTight;
 
 public class ParserRankings {
+	
 	private int rango;
 	private Posicion manoJugada;
 	private int posicion;
 	private boolean OR;
+	private FileIn filein;
+	private Vector<String> seleccionados;
+	private Vector<RankingObserver> rObserver;
+
 	
-	public ParserRankings(String Rango, String Mano, String Posicion, String Accion){
-		
-		this.rango = convertirRango(Rango);
-		this.manoJugada = parserManoJugada(Mano);
-		this.posicion = convertirPosicion(Posicion);
-		this.OR = OR(Accion);
+	public ParserRankings() {
+		this.rObserver = new Vector<RankingObserver>();
+		this.seleccionados = new Vector<String>();
 	}
+	
+	
+	public void setFile(String file) {
+		try {
+			this.filein = new FileIn();
+			this.filein.setFile(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void addSeleccionado(String selec) {
+		this.seleccionados.removeAllElements();
+		this.seleccionados.addElement(selec);
+		notifySeleccionado();
+	}
+	
+	
+//	public void evaluar() {
+//		String cadena="";
+//		
+//		while((cadena = this.filein.readJugadaRango()) != null) {
+//			
+//			String[] array = cadena.split(",");	
+//			setRango(array[0]);
+//			setManoJugada(array[1]);
+////			setPosicion(array[2]);
+////			setOR(array[3]);	
+//			// notificar a la vista para que imprima los datos
+//			notifyJugadaEvaluada(array, Resultado());
+//		}
+//		
+//		
+//	}	
+	
+
+	public void setRango(String ranking) {
+		this.rango = convertirRango(ranking);
+	}
+
+	public void setManoJugada(String mano) {
+		this.manoJugada = parserManoJugada(mano);
+	}
+
+
+	public void setPosicion(String posicion) {
+		this.posicion = convertirPosicion(posicion);
+	}
+
+	public void setOR(String accion) {
+		OR = isOR(accion);
+	}
+	
+	
+	
+
 	private int convertirRango(String Rango)
 	{
 		int rango;
@@ -33,12 +98,17 @@ public class ParserRankings {
 		{
 			rango = 2;
 		}
-		else
+		else if(Rango.equals("Sklansky-Chubukov"))
 		{
+			rango = 3;
+		}
+		else {
 			rango = 3;
 		}
 		return rango;
 	}
+	
+	
 	private int convertirPosicion (String Posicion)
 	{
 		int pos;
@@ -64,7 +134,9 @@ public class ParserRankings {
 		}
 		return pos;
 	}
-	public boolean OR(String Accion)
+	
+	
+	public boolean isOR(String Accion)
 	{
 		if (Accion.equals("OR"))
 		{
@@ -75,8 +147,11 @@ public class ParserRankings {
 			return false;
 		}
 	}
+	
+	
 	public boolean Resultado()
 	{
+		
 		PilaPosiciones pila = new PilaPosiciones();
 		RankingJanda janda = new RankingJanda();
 		RankingMa ma = new RankingMa();
@@ -100,6 +175,8 @@ public class ParserRankings {
 		{
 			pila = tight.getPosiciones(posicion);
 		}
+		
+		
 		while((!encontrado)&&(i < pila.getContador()))
 		{
 			if(mismaPosicion(pila.extractPosition(), manoJugada))
@@ -108,6 +185,7 @@ public class ParserRankings {
 			}
 			i++;
 		}
+		
 		if((encontrado)&&(this.OR))
 		{
 			return true;
@@ -126,6 +204,8 @@ public class ParserRankings {
 		}
 		//Falta rango inventado!!!
 	}
+	
+	
 	private Posicion parserManoJugada(String Mano)
 	{
 		int valor1;
@@ -142,12 +222,12 @@ public class ParserRankings {
 				if(cadena[2] == 'o')
 				{
 					suited = false;
-					this.manoJugada = new Posicion (valor2, valor1);
+					this.manoJugada = new Posicion (valor1, valor2);
 				}
 				else
 				{
 					suited = true;
-					this.manoJugada = new Posicion (valor1,valor2);
+					this.manoJugada = new Posicion (valor2,valor1);
 				}
 			}
 			else
@@ -173,6 +253,8 @@ public class ParserRankings {
 		
 		return manoJugada;
 	}
+	
+	
 	private boolean esSuited (char palo1, char palo2)
 	{
 		if(palo1 == palo2)
@@ -184,6 +266,8 @@ public class ParserRankings {
 			return false;
 		}
 	}
+	
+	
 	private int convertirCarta (char caracter)
 	{
 		int carta = -1;
@@ -230,6 +314,8 @@ public class ParserRankings {
 		}
 		return carta;
 	}
+	
+	
 	private boolean mismaPosicion(Posicion a, Posicion b)
 	{
 		int filaa,filab,columnaa,columnab;
@@ -246,4 +332,27 @@ public class ParserRankings {
 			return false;
 		}
 	}
+
+	
+	public void addObserver(RankingObserver obs) {
+		this.rObserver.add(obs);
+	}
+	
+	public void notifyJugadaEvaluada(String[] salida, boolean res) {
+		
+		for (RankingObserver o : this.rObserver){
+			o.jugadaEvaluada(salida, res);
+		}
+		
+	}
+	
+	public void notifySeleccionado() {
+		
+		for (RankingObserver o : this.rObserver){
+			o.haySeleccionado(this.seleccionados);
+		}
+		
+	}
+	
+	
 }

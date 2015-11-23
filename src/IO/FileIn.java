@@ -29,9 +29,39 @@ private BufferedReader br;
 
 	}
 	
+	public FileIn() {}
+	
+	
+	
+	
+	public void setFile(String file) throws IOException{
+		try {			
+			
+			this.fr = new FileReader(file);
+			this.br = new BufferedReader(this.fr);
+
+		} catch(FileNotFoundException exc) {
+			throw new IOException("Error al acceder al fichero de entrada ("+ file + ")");
+		}
+	}
+	
 	
 	public String getCartas() {
 		return this.cadena;
+	}
+	
+	
+	public String readJugadaRango() {
+		try {
+			this.cadena = br.readLine();
+			this.token = this.cadena.toCharArray();
+							
+			if(this.cadena == null)
+				this.fr.close();
+			return cadena;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	
