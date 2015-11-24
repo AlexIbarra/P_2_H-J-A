@@ -18,11 +18,11 @@ public class RankingJanda implements Ranking{
 		{
 			this.value = 24; // 34
 		}
-		else if (posicion == 1) //UTG+1
+		else if (posicion == 1) //MP
 		{
 			this.value = 30; // 43
 		}
-		else if (posicion == 2) //MP
+		else if (posicion == 2) //CO
 		{
 			this.value = 41; // 58
 		}
@@ -161,6 +161,27 @@ public class RankingJanda implements Ranking{
 	
 	public String toString() {
 		return "Janda";
+	}
+
+	@Override
+	public Vector<RankingObserver> getrObserver() {
+		// TODO Auto-generated method stub
+		return this.rObserver;
+	}
+
+	@Override
+	public void setrObserver(Vector<RankingObserver> rObserver) {
+		// TODO Auto-generated method stub
+		this.rObserver = rObserver;
+	}
+
+	@Override
+	public PilaPosiciones getPosicionesSlider(int porcentaje) {
+//		this.value = (porcentaje * 169) / 100;
+//		for (int i = 0; i < this.value; i++) {
+//			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
+//		}
+		return this.pila;
 	}
 
 }

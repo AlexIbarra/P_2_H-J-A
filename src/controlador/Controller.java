@@ -14,7 +14,7 @@ public class Controller {
 	private ParserRankings pRankings;
 	private Ranking rankings[];
 	private Ranking rankingActivo;
-	private RankingChurukov rChurukov;
+	private RankingChubukov rChurukov;
 	private String rango;
 	
 	
@@ -22,10 +22,12 @@ public class Controller {
 	public Controller() {
 		this.pRangos = new ParserRangos();
 		this.pRankings = new ParserRankings();
-		this.rankings  = new Ranking[3];
-		this.rankings[0] = new RankingChurukov();
+		this.rankings  = new Ranking[5];
+		this.rankings[0] = new RankingChubukov();
 		this.rankings[1] = new RankingJanda();
 		this.rankings[2] = new RankingMa();
+		this.rankings[3] = new RankingRock();
+		this.rankings[4] = new RankingTight();
 		this.rankingActivo = this.rankings[0]; // set Churukov default
 		
 	}
@@ -48,13 +50,29 @@ public class Controller {
 		this.pRankings.notifyJugadaEvaluada(salida, this.pRankings.Resultado());
 	}
 	
+	
 	public void setRanking(int opcion) {
-		if(opcion == 1)
-			this.rankingActivo = this.rankings[0];
-		else if(opcion == 2)
+		if(opcion == 1) {
+			this.rankings[0].setrObserver(this.rankingActivo.getrObserver());
+			this.rankingActivo = this.rankings[0];			
+		}
+		else if(opcion == 2) {
+			this.rankings[1].setrObserver(this.rankingActivo.getrObserver());
 			this.rankingActivo = this.rankings[1];
-		else if(opcion == 3)
+		}
+		else if(opcion == 3) {
+			this.rankings[2].setrObserver(this.rankingActivo.getrObserver());
 			this.rankingActivo = this.rankings[2];
+		}
+		else if(opcion == 4) {
+			this.rankings[3].setrObserver(this.rankingActivo.getrObserver());
+			this.rankingActivo = this.rankings[3];
+		}
+		else if(opcion == 5) {
+			this.rankings[4].setrObserver(this.rankingActivo.getrObserver());
+			this.rankingActivo = this.rankings[4];
+		}
+			
 	}
 	
 	public Ranking getRanking() {
@@ -96,6 +114,14 @@ public class Controller {
 	
 	public void nuevoranking(int porcentaje) {
 		this.rankingActivo.notifyNewRanking(this.rankingActivo.getPosiciones(porcentaje));
+	}
+	
+	public void pintaTodo(int porcentaje) {
+		this.rankingActivo.notifyNewRanking(this.rankingActivo.getPosicionesSlider(porcentaje));
+	}
+	
+	public void nuevorankingSlider(int porcentaje) {
+		this.rankingActivo.notifyNewRanking(this.rankingActivo.getPosicionesSlider(porcentaje));
 	}
 	
 	public void damePosiciones(int opcion) {

@@ -27,14 +27,7 @@ public class RankingRock implements Ranking{
 		this.vecPosicion = new Posicion[7];
 		rellenaArray();
 	}
-	public void addObserver(RankingObserver obs) {
-		this.rObserver.add(obs);
-	}
-	public void notifyNewRanking(PilaPosiciones pila) {
-		for (RankingObserver o : this.rObserver){
-			o.hayRanking(pila);
-		}
-	}
+	
 	
 	public void rellenaArray(){
 		
@@ -45,7 +38,39 @@ public class RankingRock implements Ranking{
 		vecPosicion[4]= new Posicion(2,0);
 		vecPosicion[5]= new Posicion(2,2);
 		vecPosicion[6]= new Posicion(3,3);//Rango de apertura en todos
+	}
+	
+	public void addObserver(RankingObserver obs) {
+		this.rObserver.add(obs);
+	}
+	
+	public void notifyNewRanking(PilaPosiciones pila) {
+		for (RankingObserver o : this.rObserver){
+			o.hayRanking(pila);
 		}
+	}
+
+	@Override
+	public Vector<RankingObserver> getrObserver() {
+		// TODO Auto-generated method stub
+		return this.rObserver;
+	}
+
+	@Override
+	public void setrObserver(Vector<RankingObserver> rObserver) {
+		// TODO Auto-generated method stub
+		this.rObserver = rObserver;
+	}
+
+	@Override
+	public PilaPosiciones getPosicionesSlider(int porcentaje) {
+		// TODO Auto-generated method stub
+		return this.pila;
+	}
+	
+	public String toString() {
+		return "Rock";
+	}
 	
 
 }

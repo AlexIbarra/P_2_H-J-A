@@ -31,7 +31,6 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 	private JButton evaluate;
 	private JButton[] players;
 	private JTextField[] orPlayer;
-//	private Jugador[] jugadores;
 	private JTextField[] rangopls;
 	private String rango;
 	private JTextArea salida;
@@ -39,10 +38,10 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 	private Controller controller;
 	private JComboBox<String> comboBoxRanking;
 	private JButton calcularRanking;
-	private String[] ops = {"Sklansky-Chubukov", "Janda", "Ma"};
+	private String[] ops = {"Sklansky-Chubukov", "Janda", "Ma", "Rock", "Tight"};
 	private JPanel panel;
-	
 	private String[] nombres = {"UTG", "MP", "CO", "BTN", "SB", "BB"};
+	private boolean[] pulsados = {false, false, false, false, false, false};
 	
 	public PanelOeste(Controller contr) {
 		
@@ -65,7 +64,6 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 		this.rango = new String();
 		this.comboBoxRanking = new JComboBox<String>(ops);
 		this.comboBoxRanking.setSelectedIndex(0);
-//		this.evaluarFichero = new JButton("Evaluar Fichero");
 		
 		this.setLayout(new GridLayout(2, 0));
 		
@@ -75,9 +73,6 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 		for(int i=0; i < 6; i++) {
 			
 			namePlayer.append(this.nombres[i]);
-//			namePlayer.append(i+1);
-			
-//			this.jugadores[i] = new Jugador(i);
 			
 			if(i==0){
 				tam = 10;
@@ -114,8 +109,6 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 			this.orPlayer[i] = orPlayer;
 			
 			this.players[i].addActionListener(this);
-//			this.players[i].setOnClickListener(this);
-//			this.orPlayer[i].addActionListener(this);
 			
 			norte.add(player);
 			norte.add(rango);
@@ -151,16 +144,20 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 				
 					if("Sklansky-Chubukov".equalsIgnoreCase(selectedRanking)){
 						controller.setRanking(1);
-						controller.addRankingObserver((RankingObserver) panel);
 					}
 					else if ("Janda".equalsIgnoreCase(selectedRanking)){
 						controller.setRanking(2);
-						controller.addRankingObserver((RankingObserver) panel);
 					}
 					else if("Ma".equalsIgnoreCase(selectedRanking)) {
 						controller.setRanking(3);
-						controller.addRankingObserver((RankingObserver) panel);
 					}
+					else if("Rock".equalsIgnoreCase(selectedRanking)) {
+						controller.setRanking(4);
+					}
+					else if("Tight".equalsIgnoreCase(selectedRanking)) {
+						controller.setRanking(5);
+					}
+					controller.cleanGrid();
 				}
 		        
 		    }
@@ -180,13 +177,14 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 		sur.setLayout(new BorderLayout());
 		this.salida = new JTextArea(15,50);
 		JScrollPane scroll = new JScrollPane(this.salida);
-//		scroll.setBounds(new Rectangle(30, 30, 0, 0));
 		vacio2.setLayout(new BorderLayout());
 		vacio2.add(scroll);
 		vacio2.setBorder(new TitledBorder("Salida"));
 		sur.add(vacio2, BorderLayout.SOUTH);
 		sur.add(vacio, BorderLayout.CENTER);
 		this.add(sur);
+		
+		
 		
 		this.controller.addRankingObserver(this);
 		
@@ -201,6 +199,8 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 		
 		if(e.getSource() == this.evaluate) {
 			
+			this.out = "";
+			
 			for (int i = 0; i < players.length; i++) {
 				
 				
@@ -209,9 +209,12 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 				}
 
 				this.rangopls[i].setText("");
-				this.orPlayer[i].setText("");
+				this.orPlayer[i].setText("fold");
+				this.players[i].setEnabled(true);
+				this.pulsados[i] = false;
 			}
 			
+			this.controller.cleanGrid();
 		}
 		else if(e.getSource() == this.calcularRanking) {
 			for (int i = 0; i < players.length; i++) {
@@ -228,7 +231,18 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 		for (int i = 0; i < players.length; i++) {
 			if(this.players[i] == e.getSource()) {
 				try {
-					this.players[i].setEnabled(false);
+					if(this.pulsados[i] == false) {
+						this.players[i].setBackground(Color.GREEN);
+						this.players[i].setForeground(Color.BLACK);
+//						this.players[i].setEnabled(false);
+						this.pulsados[i] = true;
+					}
+					else {
+						this.pulsados[i] = false;
+//						this.players[i].setEnabled(true);
+						this.players[i].setBackground(Color.gray);
+						this.players[i].setForeground(Color.WHITE);
+					}
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
@@ -269,6 +283,7 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 	@Override
 	public void jugadaEvaluada(String[] salida, boolean res) {
 		// TODO Auto-generated method stub
+				
 		this.out += "Rango: " + salida[0] + "\n";
 		this.out += "Mano: " + salida[1] + "\n";
 		this.out += "Posición: " + salida[2] + "\n";
@@ -288,14 +303,31 @@ public class PanelOeste extends JPanel implements ActionListener, RankingObserve
 	@Override
 	public void haySeleccionado(Vector<String> select) {
 		// TODO Auto-generated method stub
-		boolean pintado = false;
-		int i=0;
-		while(i<6 && !pintado) {
-			if(this.rangopls[i].getText().equals("")) {
-				this.rangopls[i].setText(select.lastElement());
-				pintado = true;
+//		boolean pintado = false;
+//		int i=0;
+//		while(i<6 && !pintado) {
+//			if(this.rangopls[i].getText().equals("")) {
+//				this.rangopls[i].setText(select.lastElement());
+//				pintado = true;
+//			}
+//			i++;
+//		}
+//		String cadena = new String();
+		StringBuilder cad = new StringBuilder();
+		
+		for (int j = 0; j < 6; j++) {
+			if(this.pulsados[j] == true) {
+//				cadena += select.lastElement();
+				cad.append(this.rangopls[j].getText());
+				if(cad.toString().equals("")) {
+					cad.append(select.lastElement());
+				}
+				else {
+					cad.append(",");
+					cad.append(select.lastElement());
+				}
+				this.rangopls[j].setText(cad.toString());
 			}
-			i++;
 		}
 	}
 

@@ -23,21 +23,26 @@ public class RankingMa implements Ranking{
 	
 	
 	public PilaPosiciones getPosiciones(int posicion){
-		if(posicion == 0)
+		
+		if(posicion == 0) //UTG
 		{
-			this.value = 29;
+			this.value = 34; // 34
 		}
-		else if (posicion == 1)
+		else if (posicion == 1) //MP
 		{
-			this.value = 50;
+			this.value = 43; // 43
 		}
-		else if (posicion == 2)
+		else if (posicion == 2) //CO
 		{
-			this.value = 66;
+			this.value = 58; // 58
 		}
-		else
+		else if (posicion == 3)// BTN
 		{
-			this.value = 109;
+			this.value = 96; // 96
+		}
+		else if (posicion == 4) // SB
+		{
+			this.value = 100;
 		}
 		for (int i = 0; i < this.value; i++) {
 			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
@@ -171,6 +176,33 @@ public class RankingMa implements Ranking{
 	
 	public String toString() {
 		return "Ma";
+	}
+
+
+
+	@Override
+	public Vector<RankingObserver> getrObserver() {
+		// TODO Auto-generated method stub
+		return this.rObserver;
+	}
+
+
+
+	@Override
+	public void setrObserver(Vector<RankingObserver> rObserver) {
+		// TODO Auto-generated method stub
+		this.rObserver = rObserver;
+	}
+
+
+
+	@Override
+	public PilaPosiciones getPosicionesSlider(int porcentaje) {
+//		this.value = (porcentaje * 169) / 100;
+//		for (int i = 0; i < this.value; i++) {
+//			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
+//		}
+		return this.pila;
 	}
 
 }

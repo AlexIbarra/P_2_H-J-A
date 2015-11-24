@@ -109,7 +109,7 @@ public class PanelSliders extends JPanel implements ActionListener{
 		    	porcentaje.setText(porc.toString());
 		  		porcentaje.repaint();
 		  		porc.delete(0, porc.length());
-		  		controller.nuevoranking(value);
+		  		controller.nuevorankingSlider(value);
 		      }
 		 });
 		
@@ -121,18 +121,21 @@ public class PanelSliders extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-//		this.slider.setValue(50);
-		
+	
 		if(e.getSource() == this.all) {
-	  		controller.nuevoranking(100);	
+			this.controller.cleanGrid();
+	  		controller.pintaTodo(100);	
 		}
 		else if(e.getSource() == this.anyPair) {
+			this.controller.cleanGrid();
 			this.controller.damePosiciones(1);
 		}
 		else if(e.getSource() == this.anySuited) {
+			this.controller.cleanGrid();
 			this.controller.damePosiciones(2);
 		}
 		else if(e.getSource() == this.anyBroadway) {
+			this.controller.cleanGrid();
 			this.controller.dameBroadways();
 		}
 		else if(e.getSource() == this.clear)

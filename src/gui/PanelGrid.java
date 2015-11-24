@@ -60,11 +60,11 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 				this.pares[j][i].setHorizontalAlignment(SwingConstants.CENTER);
 
 				if(j==i) // Pares
-					this.pares[j][i].setBackground(Color.green);
+					this.pares[j][i].setBackground(new Color(178,247,158));
 				else if(j>i) // Suited
-					this.pares[j][i].setBackground(Color.MAGENTA);
+					this.pares[j][i].setBackground(new Color(247,192,230));
 				else // Off Suited
-					this.pares[j][i].setBackground(Color.cyan);
+					this.pares[j][i].setBackground(new Color(198,237,248));
 				
 				this.pares[j][i].setOpaque(true);
 				this.pares[j][i].addActionListener(this);
@@ -257,11 +257,11 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 		for (int i = 0; i < 13; i++) {
 			for (int j = 0; j < 13; j++) {
 				if(j==i)
-					this.pares[j][i].setBackground(Color.green);
+					this.pares[j][i].setBackground(new Color(178,247,158));
 				else if(j>i)
-					this.pares[j][i].setBackground(Color.MAGENTA);
+					this.pares[j][i].setBackground(new Color(247,192,230));
 				else
-					this.pares[j][i].setBackground(Color.cyan);
+					this.pares[j][i].setBackground(new Color(198,237,248));
 			}			
 		}
 	}
@@ -279,15 +279,14 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 				if(e.getSource() == this.pares[j][i]){
 					if(this.pares[j][i].getBackground() != Color.YELLOW) {
 						this.pares[j][i].setBackground(Color.YELLOW);
-//						seleccionados.add(this.pares[j][i].getText());
 						this.controller.addSeleccionado(this.pares[j][i].getText());
 					}
 					else if(j==i)
-						this.pares[j][i].setBackground(Color.green);
+						this.pares[j][i].setBackground(new Color(178,247,158));
 					else if(j>i)
-						this.pares[j][i].setBackground(Color.MAGENTA);
+						this.pares[j][i].setBackground(new Color(247,192,230));
 					else
-						this.pares[j][i].setBackground(Color.cyan);
+						this.pares[j][i].setBackground(new Color(198,237,248));
 					
 				}
 			}
@@ -305,7 +304,7 @@ public class PanelGrid extends JPanel implements ActionListener, RangoObserver, 
 		Posicion pos = new Posicion();
 		
 		// Primero dejo el tablero en su estado inicial
-		resetGrid();
+//		resetGrid();
 		
 		// Pinto las cartas del rango correspondiente
 		for (int i = 0; i < posiciones.getContador();i++){

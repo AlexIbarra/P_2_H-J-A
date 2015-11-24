@@ -7,14 +7,16 @@ import main.PilaPosiciones;
 import main.Posicion;
 import observers.RankingObserver;
 
-public class RankingChurukov implements Ranking {
+public class RankingChubukov implements Ranking {
 	
 	private Posicion[] vecPosicion;
 	private PilaPosiciones pila;
 	private int value;
 	private Vector<RankingObserver> rObserver;
 	
-	public RankingChurukov(){
+	
+
+	public RankingChubukov(){
 		this.pila = new PilaPosiciones();
 		this.value = 0;
 		this.rObserver = new Vector<RankingObserver>();
@@ -22,8 +24,31 @@ public class RankingChurukov implements Ranking {
 		rellenaArray();
 	}
 	
-	public PilaPosiciones getPosiciones(int porcentaje) {
-		this.value = (porcentaje * 169) / 100;
+	
+	
+	public PilaPosiciones getPosiciones(int posicion) {
+//		this.value = (porcentaje * 169) / 100;
+		
+		if(posicion == 0) //UTG
+		{
+			this.value = 17; // 34
+		}
+		else if (posicion == 1) //MP
+		{
+			this.value = 32; // 43
+		}
+		else if (posicion == 2) //CO
+		{
+			this.value = 41; // 58
+		}
+		else if (posicion == 3)// BTN
+		{
+			this.value = 80; // 96
+		}
+		else if (posicion == 4) // SB
+		{
+			this.value = 100;
+		}
 		for (int i = 0; i < this.value; i++) {
 			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
 		}
@@ -213,7 +238,24 @@ public class RankingChurukov implements Ranking {
 		}
 	}
 	
+	public Vector<RankingObserver> getrObserver() {
+		return rObserver;
+	}
+
+	public void setrObserver(Vector<RankingObserver> rObserver) {
+		this.rObserver = rObserver;
+	}
+	
 	public String toString() {
 		return "Sklansky-Chubukov";
+	}
+
+	@Override
+	public PilaPosiciones getPosicionesSlider(int porcentaje) {
+		this.value = (porcentaje * 169) / 100;
+		for (int i = 0; i < this.value; i++) {
+			this.pila.addPosicion(this.vecPosicion[i].getColumna(), this.vecPosicion[i].getFila());
+		}
+		return this.pila;
 	}
 }

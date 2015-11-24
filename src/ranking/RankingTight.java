@@ -13,6 +13,7 @@ public class RankingTight implements Ranking{
 	private Vector<RankingObserver> rObserver;
 	
 	public PilaPosiciones getPosiciones(int posicion){
+		
 		if(posicion == 0)
 		{
 			this.value = 4;
@@ -86,6 +87,27 @@ public class RankingTight implements Ranking{
 		vecPosicion[26]= new Posicion(11,11);
 		vecPosicion[27]= new Posicion(12,12);//Rango desde BTN
 		}
+
+	@Override
+	public Vector<RankingObserver> getrObserver() {
+		// TODO Auto-generated method stub
+		return this.rObserver;
+	}
+
+	@Override
+	public void setrObserver(Vector<RankingObserver> rObserver) {
+		// TODO Auto-generated method stub
+		this.rObserver = rObserver;
+	}
+
+	@Override
+	public PilaPosiciones getPosicionesSlider(int porcentaje) {
+		// TODO Auto-generated method stub
+		return this.pila;
+	}
 	
+	public String toString() {
+		return "Tight";
+	}
 
 }

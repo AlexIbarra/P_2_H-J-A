@@ -45,23 +45,6 @@ public class ParserRankings {
 	}
 	
 	
-//	public void evaluar() {
-//		String cadena="";
-//		
-//		while((cadena = this.filein.readJugadaRango()) != null) {
-//			
-//			String[] array = cadena.split(",");	
-//			setRango(array[0]);
-//			setManoJugada(array[1]);
-////			setPosicion(array[2]);
-////			setOR(array[3]);	
-//			// notificar a la vista para que imprima los datos
-//			notifyJugadaEvaluada(array, Resultado());
-//		}
-//		
-//		
-//	}	
-	
 
 	public void setRango(String ranking) {
 		this.rango = convertirRango(ranking);
@@ -90,21 +73,19 @@ public class ParserRankings {
 		{
 			rango = 0;
 		}
-		else if (Rango.equals("Janda"))
+		else if(Rango.equals("Janda"))
 		{
 			rango = 1;
 		}
-		else if (Rango.equals("Rock"))
+		else if(Rango.equals("Rock"))
 		{
 			rango = 2;
-		}
-		else if(Rango.equals("Sklansky-Chubukov"))
-		{
-			rango = 3;
 		}
 		else {
 			rango = 3;
 		}
+		
+
 		return rango;
 	}
 	

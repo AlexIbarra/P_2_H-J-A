@@ -5,6 +5,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import controlador.Controller;
 
@@ -21,10 +22,10 @@ public class PanelEste extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		
-//		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(), BorderFactory.createLoweredSoftBevelBorder()));
+		PanelGrid ps = new PanelGrid(controller);
+		ps.setBorder(new TitledBorder("Grid"));
 		
-		this.add(new PanelGrid(controller), BorderLayout.NORTH);
+		this.add(ps, BorderLayout.NORTH);
 		this.add(new PanelSliders(controller), BorderLayout.CENTER);
-//		this.add(new PanelButtons(controller),BorderLayout.SOUTH);
 	}
 }
